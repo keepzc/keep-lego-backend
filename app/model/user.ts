@@ -1,6 +1,6 @@
 import { Application } from 'egg';
 import { Schema } from 'mongoose';
-import * as AutoIncrementFactory from 'mongoose-sequence';
+import AutoIncrementFactory from 'mongoose-sequence';
 export interface UserProps {
   username: string;
   password: string;

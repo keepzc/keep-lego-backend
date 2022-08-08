@@ -11,6 +11,7 @@ export default class UserService extends Service {
       password: hash,
       email: username,
     };
+    console.log(userCreateData, '0000++');
     return ctx.model.User.create(userCreateData);
   }
 

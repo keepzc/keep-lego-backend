@@ -1,4 +1,5 @@
 import { Controller } from 'egg';
+import { sign } from 'jsonwebtoken';
 const userCreateRules = {
   username: 'email',
   password: { type: 'password', min: 8 },
@@ -32,7 +33,9 @@ export default class UserController extends Controller {
       });
     }
     const { username } = ctx.request.body;
+
     const user = await service.user.findByUserName(username);
+
     if (user) {
       return ctx.helper.error({
         ctx,
@@ -40,11 +43,12 @@ export default class UserController extends Controller {
       });
     }
     const userData = await service.user.createByEmail(ctx.request.body);
+    console.log(userData, '0000');
     ctx.helper.success({ ctx, res: userData });
   }
 
   async loginByEmail() {
-    const { ctx, service } = this;
+    const { ctx, service, app } = this;
     //检查用户输入
     const errors = this.validateUserInput();
     if (errors) {
@@ -66,9 +70,11 @@ export default class UserController extends Controller {
     if (!verifyPwd) {
       return ctx.helper.error({ ctx, errorType: 'loginCheckFailInfo' });
     }
-    // const userObj = user.toJSON();
-    // delete userObj?.password;
-    ctx.helper.success({ ctx, res: user, msg: '登录成功' });
+
+    const token = sign({ username: user.username }, app.config.secret, {
+      expiresIn: 60 * 60,
+    });
+    ctx.helper.success({ ctx, res: token, msg: '登录成功' });
   }
   validateUserInput() {
     const { ctx, app } = this;

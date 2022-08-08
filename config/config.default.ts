@@ -30,6 +30,7 @@ export default (appInfo: EggAppInfo) => {
       allowedMethod: ['POST'],
     },
     baseUrl: 'default.url',
+    secret: 'keep18232079049',
   };
 
   // the return config will combines to EggAppConfig
