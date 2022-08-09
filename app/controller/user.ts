@@ -43,7 +43,6 @@ export default class UserController extends Controller {
       });
     }
     const userData = await service.user.createByEmail(ctx.request.body);
-    console.log(userData, '0000');
     ctx.helper.success({ ctx, res: userData });
   }
 

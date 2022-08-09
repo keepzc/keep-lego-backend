@@ -1,5 +1,4 @@
 import { Application } from 'egg';
-import { Schema } from 'mongoose';
 import AutoIncrementFactory from 'mongoose-sequence';
 export interface UserProps {
   username: string;
@@ -14,6 +13,7 @@ export interface UserProps {
 
 function initUserModel(app: Application) {
   const AutoIncrement = AutoIncrementFactory(app.mongoose);
+  const { Schema } = app.mongoose;
   const userSchema = new Schema<UserProps>(
     {
       username: { type: String, unique: true, required: true },
