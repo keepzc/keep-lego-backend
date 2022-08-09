@@ -37,4 +37,7 @@ export default class AppBoot implements IBoot {
     // console.log('did ready res', res);
     // console.log('did middleware', this.app.middleware);
   }
+  async didReady() {
+    console.log('middleware', this.app.middleware);
+  }
 }

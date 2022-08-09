@@ -8,7 +8,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1659232540970_2598';
 
   // add your egg config in here
-  config.middleware = [];
+  config.middleware = ['customError'];
   config.security = {
     csrf: {
       enable: false,
@@ -20,6 +20,9 @@ export default (appInfo: EggAppInfo) => {
   config.bcrypt = {
     saltRounds: 10,
   };
+  config.jwt = {
+    secret: 'keep18232079049',
+  };
   config.view = {
     defaultViewEngine: 'nunjucks',
   };
@@ -30,7 +33,9 @@ export default (appInfo: EggAppInfo) => {
       allowedMethod: ['POST'],
     },
     baseUrl: 'default.url',
-    secret: 'keep18232079049',
+    // jwt: {
+    //   secret: 'keep18232079049',
+    // },
   };
 
   // the return config will combines to EggAppConfig

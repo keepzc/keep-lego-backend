@@ -1,5 +1,4 @@
 import { Controller } from 'egg';
-import { sign } from 'jsonwebtoken';
 const userCreateRules = {
   username: 'email',
   password: { type: 'password', min: 8 },
@@ -20,11 +19,15 @@ export const userErrorMessages = {
     errno: 101003,
     message: '该用户不存在或者密码错误',
   },
+  loginValidateFail: {
+    errno: 101004,
+    message: '登录校验失败',
+  },
 };
 export default class UserController extends Controller {
   async createByEmail() {
     const { ctx, service } = this;
-    const errors = this.validateUserInput();
+    const errors = this.validateUserInput(userCreateRules);
     if (errors) {
       return ctx.helper.error({
         ctx,
@@ -49,7 +52,7 @@ export default class UserController extends Controller {
   async loginByEmail() {
     const { ctx, service, app } = this;
     //检查用户输入
-    const errors = this.validateUserInput();
+    const errors = this.validateUserInput(userCreateRules);
     if (errors) {
       return ctx.helper.error({
         ctx,
@@ -69,21 +72,36 @@ export default class UserController extends Controller {
     if (!verifyPwd) {
       return ctx.helper.error({ ctx, errorType: 'loginCheckFailInfo' });
     }
-
-    const token = sign({ username: user.username }, app.config.secret, {
-      expiresIn: 60 * 60,
-    });
+    const token = app.jwt.sign(
+      { username: user.username },
+      app.config.jwt.secret,
+      {
+        expiresIn: 60 * 60,
+      }
+    );
     ctx.helper.success({ ctx, res: token, msg: '登录成功' });
   }
-  validateUserInput() {
+  validateUserInput(rules: any) {
     const { ctx, app } = this;
-    const errors = app.validator.validate(userCreateRules, ctx.request.body);
+    const errors = app.validator.validate(rules, ctx.request.body);
     ctx.logger.warn(errors);
     return errors;
   }
   async show() {
-    const { ctx, service } = this;
-    const userData = await service.user.findById(ctx.params.id);
-    ctx.helper.success({ ctx, res: userData });
+    const { ctx } = this;
+    // const token = this.getTokenValue();
+    // if (!token) {
+    //   return ctx.helper.error({ ctx, errorType: 'loginValidateFail' });
+    // }
+    // try {
+    //   const decoded = verify(token, app.config.secret);
+    //   ctx.helper.success({ ctx, res: decoded });
+    // } catch (error) {
+    //   return ctx.helper.error({ ctx, errorType: 'loginValidateFail' });
+    // }
+    const userData = await this.service.user.findByUserName(
+      ctx.state.user.username
+    );
+    ctx.helper.success({ ctx, res: userData?.toJSON() });
   }
 }
