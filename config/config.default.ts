@@ -1,5 +1,6 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
-
+import * as dotenv from 'dotenv';
+dotenv.config();
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
 
@@ -26,6 +27,22 @@ export default (appInfo: EggAppInfo) => {
   config.view = {
     defaultViewEngine: 'nunjucks',
   };
+  config.redis = {
+    client: {
+      port: 6379,
+      host: '127.0.0.1',
+      password: '',
+      db: 0,
+    },
+  };
+  //gitee oauth config
+  const giteeOauthConfig = {
+    cid: process.env.GITEE_CID,
+    secret: process.env.GITEE_SECRET,
+    redirectURL: 'http://127.0.0.1:7001/api/users/passport/gitee/callback',
+    authURL: 'https://gitee.com/oauth/token?grant_type=authorization_code',
+    giteeUserApi: 'https://gitee.com/api/v5/user',
+  };
   // add your special config in here
   const bizConfig = {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,
@@ -36,6 +53,7 @@ export default (appInfo: EggAppInfo) => {
     // jwt: {
     //   secret: 'keep18232079049',
     // },
+    giteeOauthConfig,
   };
 
   // the return config will combines to EggAppConfig
