@@ -35,6 +35,10 @@ export default (appInfo: EggAppInfo) => {
       db: 0,
     },
   };
+  config.cors = {
+    origin: 'http://localhost:8080',
+    allowMethods: 'GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH',
+  };
   //gitee oauth config
   const giteeOauthConfig = {
     cid: process.env.GITEE_CID,
