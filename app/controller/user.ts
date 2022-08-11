@@ -49,7 +49,7 @@ export const userErrorMessages = {
   },
   //gitee 授权错误
   giteeOauthError: {
-    rrno: 101007,
+    errno: 101007,
     message: 'gitee 授权错误',
   },
 };
@@ -102,7 +102,7 @@ export default class UserController extends Controller {
       return ctx.helper.error({ ctx, errorType: 'loginCheckFailInfo' });
     }
     const token = app.jwt.sign(
-      { username: user.username },
+      { username: user.username, _id: user._id },
       app.config.jwt.secret,
       {
         expiresIn: 60 * 60,

@@ -8,11 +8,13 @@ export default (app: Application) => {
   // const jwt = app.middleware.jwt({
   //   secret: app.config.jwt.secret,
   // });
+  const jwtMiddleware = app.jwt as any;
+
   router.get('/', controller.home.index);
   router.post('/api/users/create', controller.user.createByEmail);
   router.post('/api/users/loginByEmail', controller.user.loginByEmail);
   // router.get('/api/users/:id', controller.user.show);
-  router.get('/api/users/getUserInfo', app.jwt as any, controller.user.show);
+  router.get('/api/users/getUserInfo', jwtMiddleware, controller.user.show);
   router.post('/api/users/genVeriCode', controller.user.sendVeriCode);
   router.post(
     '/api/users/loginByPhoneNumber',
@@ -23,4 +25,6 @@ export default (app: Application) => {
     '/api/users/passport/gitee/callback',
     controller.user.oauthByGitee
   );
+
+  router.post('/api/works', jwtMiddleware, controller.work.createWork);
 };
