@@ -1,4 +1,5 @@
 import { Controller } from 'egg';
+import inputValidate from '../decorator/inputValidate';
 const userCreateRules = {
   username: 'email',
   password: { type: 'password', min: 8 },
@@ -20,16 +21,9 @@ const sendCodeRules = {
 // };
 
 export default class UserController extends Controller {
+  @inputValidate(userCreateRules, 'userValidateFail')
   async createByEmail() {
     const { ctx, service } = this;
-    const errors = this.validateUserInput(userCreateRules);
-    if (errors) {
-      return ctx.helper.error({
-        ctx,
-        errorType: 'userValidateFail',
-        error: errors,
-      });
-    }
     const { username } = ctx.request.body;
 
     const user = await service.user.findByUserName(username);
@@ -43,18 +37,9 @@ export default class UserController extends Controller {
     const userData = await service.user.createByEmail(ctx.request.body);
     ctx.helper.success({ ctx, res: userData });
   }
-
+  @inputValidate(userCreateRules, 'userValidateFail')
   async loginByEmail() {
     const { ctx, service, app } = this;
-    //检查用户输入
-    const errors = this.validateUserInput(userCreateRules);
-    if (errors) {
-      return ctx.helper.error({
-        ctx,
-        errorType: 'userValidateFail',
-        error: errors,
-      });
-    }
     //根据username取得用户信息
     const { username, password } = ctx.request.body;
     const user = await service.user.findByUserName(username);
@@ -76,21 +61,11 @@ export default class UserController extends Controller {
     );
     ctx.helper.success({ ctx, res: token, msg: '登录成功' });
   }
-  validateUserInput(rules: any) {
-    const { ctx, app } = this;
-    const errors = app.validator.validate(rules, ctx.request.body);
-    ctx.logger.warn(errors);
-    return errors;
-  }
   // 手机登录
+  @inputValidate(sendCodeRules, 'userValidateFail')
   async loginByCellphone() {
     const { ctx, app } = this;
     const { phoneNumber, veriCode } = ctx.request.body;
-    // 检查用户输入
-    const error = this.validateUserInput(sendCodeRules);
-    if (error) {
-      return ctx.helper.error({ ctx, errorType: 'userValidateFail', error });
-    }
     // 传入验证码是否正确
     const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`);
     // 判断是否存在
@@ -103,14 +78,10 @@ export default class UserController extends Controller {
     const token = await this.service.user.loginByCellphone(phoneNumber);
     ctx.helper.success({ ctx, res: { token } });
   }
+  @inputValidate(sendCodeRules, 'userValidateFail')
   async sendVeriCode() {
     const { ctx, app } = this;
     const { phoneNumber } = ctx.request.body;
-    // 检查用户输入
-    const error = this.validateUserInput(sendCodeRules);
-    if (error) {
-      return ctx.helper.error({ ctx, errorType: 'userValidateFail', error });
-    }
     // 获取redis数据
     const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`);
     // 判断是否存在
