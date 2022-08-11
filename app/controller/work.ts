@@ -3,21 +3,6 @@ const workCreateRules = {
   title: 'string',
 };
 
-export const workErrorMessages = {
-  workValidateFail: {
-    errno: 102001,
-    message: '输入信息验证失败',
-  },
-  workNoPermissonFail: {
-    errno: 102002,
-    message: '没有权限完成操作',
-  },
-  workNoPublicFail: {
-    errno: 102003,
-    message: '该作品未公开，不能进行操作',
-  },
-};
-
 export default class WorkController extends Controller {
   private validateUserInput(rules: any) {
     const { ctx, app } = this;
