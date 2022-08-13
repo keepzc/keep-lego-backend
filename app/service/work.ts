@@ -44,4 +44,19 @@ export default class UserService extends Service {
     const count = await ctx.model.Work.find(find).count();
     return { count, list: res, pageSize, pageIndex };
   }
+
+  async publish(id: number, isTemplate = false) {
+    const { ctx } = this;
+    const { H5BaseURL } = ctx.app.config;
+    const payload: Partial<WorkProps> = {
+      status: 2,
+      latestPublishAt: new Date(),
+      ...(isTemplate && { isTemplate: true }),
+    };
+    const res = await ctx.model.Work.findOneAndUpdate({ id }, payload, {
+      new: true,
+    });
+    const uuid = res?.uuid;
+    return `${H5BaseURL}/p/${id}-${uuid}`;
+  }
 }

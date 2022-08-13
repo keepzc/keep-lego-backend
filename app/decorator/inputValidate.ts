@@ -6,6 +6,7 @@ export default function validateInput(rules: any, errorType: GlobalErrorTypes) {
     const originalMethod = descriptor.value;
     descriptor.value = async function (...args: any[]) {
       const that = this as Controller;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const { ctx, app } = that;
       const errors = app.validator.validate(rules, ctx.request.body);

@@ -1,5 +1,6 @@
 import { Controller } from 'egg';
 import inputValidate from '../decorator/inputValidate';
+import checkPermission from '../decorator/checkPermission';
 const workCreateRules = {
   title: 'string',
 };
@@ -53,5 +54,37 @@ export default class WorkController extends Controller {
     };
     const res = await ctx.service.work.getList(listCondition);
     ctx.helper.success({ ctx, res });
+  }
+  @checkPermission('Work', 'workNoPermissonFail')
+  async update() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+    const payload = ctx.request.body;
+    const res = await ctx.model.Work.findOneAndUpdate({ id }, payload, {
+      new: true,
+    });
+    ctx.helper.success({ ctx, res });
+  }
+
+  @checkPermission('Work', 'workNoPermissonFail')
+  async delete() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+    const res = await ctx.model.Work.findOneAndDelete({ id })
+      .select('_id id title')
+      .lean();
+    ctx.helper.success({ ctx, res });
+  }
+  @checkPermission('Work', 'workNoPermissonFail')
+  async publish(isTemplate: boolean) {
+    const { ctx, service } = this;
+    const url = await service.work.publish(ctx.params.id, isTemplate);
+    ctx.helper.success({ ctx, res: { url } });
+  }
+  async publishWork() {
+    await this.publish(false);
+  }
+  async publishTemplate() {
+    await this.publish(true);
   }
 }

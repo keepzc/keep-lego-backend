@@ -58,6 +58,7 @@ export default (appInfo: EggAppInfo) => {
     //   secret: 'keep18232079049',
     // },
     giteeOauthConfig,
+    H5BaseURL: 'http://localhost:7001/api/pages',
   };
 
   // the return config will combines to EggAppConfig
