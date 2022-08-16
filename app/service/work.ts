@@ -7,7 +7,7 @@ const defaultIndexCondition: Required<IndexCondition> = {
   pageIndex: 0,
   pageSize: 10,
   select: '',
-  populate: '',
+  populate: [''],
   customSort: { createdAt: -1 },
   find: {},
 };

@@ -1,4 +1,5 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import { join } from 'path';
 import * as dotenv from 'dotenv';
 dotenv.config();
 export default (appInfo: EggAppInfo) => {
@@ -9,7 +10,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1659232540970_2598';
 
   // add your egg config in here
-  config.middleware = ['customError'];
+  // config.middleware = ['customError'];
   config.security = {
     csrf: {
       enable: false,
@@ -22,7 +23,14 @@ export default (appInfo: EggAppInfo) => {
     saltRounds: 10,
   };
   config.jwt = {
-    secret: 'keep18232079049',
+    secret: process.env.JWT_SECRET || '',
+    enable: true,
+    match: [
+      '/api/users/getUserInfo',
+      '/api/works',
+      '/api/utils/upload-img',
+      '/api/channel',
+    ],
   };
   config.view = {
     defaultViewEngine: 'nunjucks',
@@ -38,6 +46,29 @@ export default (appInfo: EggAppInfo) => {
   config.cors = {
     origin: 'http://localhost:8080',
     allowMethods: 'GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH',
+  };
+  // config.multipart = {
+  //   mode: 'file',
+  //   tmpdir: join(appInfo.baseDir, 'uploads'),
+  // };
+  config.static = {
+    dir: [
+      { prefix: '/public', dir: join(appInfo.baseDir, 'app/public') },
+      { prefix: '/uploads', dir: join(appInfo.baseDir, 'uploads') },
+    ],
+  };
+  config.multipart = {
+    whitelist: ['.png', '.jpg', '.gif', '.webp'],
+    fileSize: '1mb',
+  };
+  config.oss = {
+    client: {
+      accessKeyId: process.env.ALC_ACCESS_KEY || '',
+      accessKeySecret: process.env.ALC_SECRET_KEY || '',
+      bucket: 'keep-lego-back',
+      endpoint: process.env.OSS_ENDPOINT || '',
+      timeout: '60s',
+    },
   };
   //gitee oauth config
   const giteeOauthConfig = {

@@ -18,9 +18,11 @@ export default class AppBoot implements IBoot {
 
   configWillLoad() {
     //只是支持同步调用
-    console.log('config', this.app.config.baseUrl);
-    console.log('enable middleware', this.app.config.coreMiddleware);
-    this.app.config.coreMiddleware.unshift('myLogger');
+    // console.log('config', this.app.config.baseUrl);
+    // console.log('enable middleware', this.app.config.coreMiddleware);
+    // this.app.config.coreMiddleware.unshift('myLogger');
+    //添加 customError 中间件提前
+    this.app.config.coreMiddleware.push('customError');
   }
 
   async willReady() {

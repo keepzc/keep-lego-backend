@@ -2,6 +2,10 @@ import { Application } from 'egg';
 import { ObjectId } from 'mongoose';
 import AutoIncrementFactory from 'mongoose-sequence';
 
+interface ChannelProps {
+  name: string;
+  id: string;
+}
 export interface WorkProps {
   id?: number;
   uuid: string;
@@ -17,6 +21,7 @@ export interface WorkProps {
   status?: 0 | 1 | 2;
   user: ObjectId;
   latestPublishAt?: Date;
+  channels?: ChannelProps[];
 }
 
 function initWorkModel(app: Application) {
@@ -37,6 +42,7 @@ function initWorkModel(app: Application) {
       status: { type: Number, default: 1 }, // 0是删除 1未发布 2发布 3管理员强制下线
       user: { type: Schema.Types.ObjectId, ref: 'User' },
       latestPublishAt: { type: Date },
+      channels: { type: Array },
     },
     { timestamps: true }
   );
