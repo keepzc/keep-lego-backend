@@ -23,6 +23,11 @@ export interface IndexCondition {
 }
 export default class WorkController extends Controller {
   @inputValidate(channelCreateRules, 'channelValidateFail')
+  @checkPermission(
+    { casl: 'Channel', mongoose: 'Work' },
+    'workNoPermissonFail',
+    { value: { type: 'body', valueKey: 'workId' } }
+  )
   async createChannel() {
     const { ctx } = this;
     const { name, workId } = ctx.request.body;
@@ -37,6 +42,7 @@ export default class WorkController extends Controller {
       ctx.helper.error({ ctx, errorType: 'channelOperateFail' });
     }
   }
+  @checkPermission({ casl: 'Channel', mongoose: 'Work' }, 'workNoPermissonFail')
   async getWorkChannel() {
     const { ctx } = this;
     const { id } = ctx.params;
@@ -55,6 +61,11 @@ export default class WorkController extends Controller {
     }
   }
   //更新渠道
+  @checkPermission(
+    { casl: 'Channel', mongoose: 'Work' },
+    'workNoPermissonFail',
+    { key: 'channels.id' }
+  )
   async updateChannelName() {
     const { ctx } = this;
     const { id } = ctx.params;
@@ -66,6 +77,11 @@ export default class WorkController extends Controller {
     ctx.helper.success({ ctx, res: { name } });
   }
   //删除渠道
+  @checkPermission(
+    { casl: 'Channel', mongoose: 'Work' },
+    'workNoPermissonFail',
+    { key: 'channels.id' }
+  )
   async deleteChannel() {
     const { ctx } = this;
     const { id } = ctx.params;
@@ -78,13 +94,15 @@ export default class WorkController extends Controller {
     );
     ctx.helper.success({ ctx, res: { work } });
   }
+  //创建作品
   @inputValidate(workCreateRules, 'workValidateFail')
+  @checkPermission('Work', 'workNoPermissonFail')
   async createWork() {
     const { ctx, service } = this;
     const workData = await service.work.createEmptyWork(ctx.request.body);
     ctx.helper.success({ ctx, res: workData });
   }
-
+  //获取作品列表
   async myList() {
     const { ctx } = this;
     const userId = ctx.state.user._id;
@@ -105,7 +123,14 @@ export default class WorkController extends Controller {
     const res = await ctx.service.work.getList(listCondition);
     ctx.helper.success({ ctx, res });
   }
-
+  //获取单个作品
+  @checkPermission('Work', 'workNoPermissonFail')
+  async myWork() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+    const res = await this.ctx.model.Work.findOne({ id }).lean();
+    ctx.helper.success({ ctx, res });
+  }
   async templateList() {
     const { ctx } = this;
     const { pageIndex, pageSize } = ctx.request.query;
@@ -139,7 +164,7 @@ export default class WorkController extends Controller {
       .lean();
     ctx.helper.success({ ctx, res });
   }
-  @checkPermission('Work', 'workNoPermissonFail')
+  @checkPermission('Work', 'workNoPermissonFail', { action: 'publish' })
   async publish(isTemplate: boolean) {
     const { ctx, service } = this;
     const url = await service.work.publish(ctx.params.id, isTemplate);

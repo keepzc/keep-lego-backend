@@ -21,7 +21,8 @@ export default (app: Application) => {
   router.get('/users/passport/gitee/callback', controller.user.oauthByGitee);
 
   router.post('/works', controller.work.createWork);
-  router.get('/worksQuery', controller.work.myList);
+  router.get('/works', controller.work.myList);
+  router.get('/works/:id', controller.work.myWork);
   router.get('/templates', controller.work.templateList);
   router.patch('/works/:id', controller.work.update);
   router.delete('/works/:id', controller.work.delete);
