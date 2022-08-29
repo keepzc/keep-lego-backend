@@ -13,14 +13,14 @@ export default (appInfo: EggAppInfo) => {
   // config.middleware = ['customError'];
   config.security = {
     csrf: {
-      enable: false,
-    },
+      enable: false
+    }
   };
   config.mongoose = {
-    url: 'mongodb://admin:123456@localhost:27017/lego?authSource=admin',
+    url: 'mongodb://localhost:27017/lego'
   };
   config.bcrypt = {
-    saltRounds: 10,
+    saltRounds: 10
   };
   config.jwt = {
     secret: process.env.JWT_SECRET || '',
@@ -29,23 +29,23 @@ export default (appInfo: EggAppInfo) => {
       '/api/users/getUserInfo',
       '/api/works',
       '/api/utils/upload-img',
-      '/api/channel',
-    ],
+      '/api/channel'
+    ]
   };
   config.view = {
-    defaultViewEngine: 'nunjucks',
+    defaultViewEngine: 'nunjucks'
   };
   config.redis = {
     client: {
       port: 6379,
       host: '127.0.0.1',
       password: '',
-      db: 0,
-    },
+      db: 0
+    }
   };
   config.cors = {
     origin: 'http://localhost:8080',
-    allowMethods: 'GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH',
+    allowMethods: 'GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH'
   };
   // config.multipart = {
   //   mode: 'file',
@@ -54,12 +54,12 @@ export default (appInfo: EggAppInfo) => {
   config.static = {
     dir: [
       { prefix: '/public', dir: join(appInfo.baseDir, 'app/public') },
-      { prefix: '/uploads', dir: join(appInfo.baseDir, 'uploads') },
-    ],
+      { prefix: '/uploads', dir: join(appInfo.baseDir, 'uploads') }
+    ]
   };
   config.multipart = {
     whitelist: ['.png', '.jpg', '.gif', '.webp'],
-    fileSize: '1mb',
+    fileSize: '1mb'
   };
   config.oss = {
     client: {
@@ -67,34 +67,34 @@ export default (appInfo: EggAppInfo) => {
       accessKeySecret: process.env.ALC_SECRET_KEY || '',
       bucket: 'keep-lego-back',
       endpoint: process.env.OSS_ENDPOINT || '',
-      timeout: '60s',
-    },
+      timeout: '60s'
+    }
   };
-  //gitee oauth config
+  // gitee oauth config
   const giteeOauthConfig = {
     cid: process.env.GITEE_CID,
     secret: process.env.GITEE_SECRET,
     redirectURL: 'http://127.0.0.1:7001/api/users/passport/gitee/callback',
     authURL: 'https://gitee.com/oauth/token?grant_type=authorization_code',
-    giteeUserApi: 'https://gitee.com/api/v5/user',
+    giteeUserApi: 'https://gitee.com/api/v5/user'
   };
   // add your special config in here
   const bizConfig = {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,
     myLogger: {
-      allowedMethod: ['POST'],
+      allowedMethod: ['POST']
     },
     baseUrl: 'default.url',
     // jwt: {
     //   secret: 'keep18232079049',
     // },
     giteeOauthConfig,
-    H5BaseURL: 'http://localhost:7001/api/pages',
+    H5BaseURL: 'http://localhost:7001/api/pages'
   };
 
   // the return config will combines to EggAppConfig
   return {
     ...(config as {}),
-    ...bizConfig,
+    ...bizConfig
   };
 };

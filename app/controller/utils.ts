@@ -56,7 +56,7 @@ export default class UtilsController extends Controller {
             return ctx.helper.error({
               ctx,
               errorType: 'imageUploadFileSizeError',
-              error: `Reach fileSize limit ${fileSize} bytes`,
+              error: `Reach fileSize limit ${fileSize} bytes`
             });
           }
         } catch (e) {
@@ -140,7 +140,7 @@ export default class UtilsController extends Controller {
     const url = this.handleUrl(filepath);
     ctx.helper.success({
       ctx,
-      res: { url, thumbnailUrl: thumbnailUrl ? thumbnailUrl : url },
+      res: { url, thumbnailUrl: thumbnailUrl ? thumbnailUrl : url }
     });
   }
   // 处理上传图片返回filePath 系统不兼容方法
@@ -193,8 +193,8 @@ export default class UtilsController extends Controller {
       ctx,
       res: {
         url: this.handleUrl(savedFilePath),
-        thumbnailUrl: this.handleUrl(savedThumbnailPath),
-      },
+        thumbnailUrl: this.handleUrl(savedThumbnailPath)
+      }
     });
   }
 }

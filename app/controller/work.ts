@@ -4,11 +4,11 @@ import { nanoid } from 'nanoid';
 import inputValidate from '../decorator/inputValidate';
 import checkPermission from '../decorator/checkPermission';
 const workCreateRules = {
-  title: 'string',
+  title: 'string'
 };
 const channelCreateRules = {
   name: 'string',
-  workId: 'number',
+  workId: 'number'
 };
 export interface IndexCondition {
   pageIndex?: number;
@@ -53,14 +53,14 @@ export default class WorkController extends Controller {
         ctx,
         res: {
           count: (channels && channels.length) || 0,
-          list: channels || [],
-        },
+          list: channels || []
+        }
       });
     } else {
       ctx.helper.error({ ctx, errorType: 'channelOperateFail' });
     }
   }
-  //更新渠道
+  // 更新渠道
   @checkPermission(
     { casl: 'Channel', mongoose: 'Work' },
     'workNoPermissonFail',
@@ -76,7 +76,7 @@ export default class WorkController extends Controller {
     );
     ctx.helper.success({ ctx, res: { name } });
   }
-  //删除渠道
+  // 删除渠道
   @checkPermission(
     { casl: 'Channel', mongoose: 'Work' },
     'workNoPermissonFail',
@@ -88,13 +88,13 @@ export default class WorkController extends Controller {
     const work = await ctx.model.Work.findOneAndUpdate(
       { 'channels.id': id },
       {
-        $pull: { channels: { id } },
+        $pull: { channels: { id } }
       },
       { new: true }
     );
     ctx.helper.success({ ctx, res: { work } });
   }
-  //创建作品
+  // 创建作品
   @inputValidate(workCreateRules, 'workValidateFail')
   @checkPermission('Work', 'workNoPermissonFail')
   async createWork() {
@@ -102,7 +102,7 @@ export default class WorkController extends Controller {
     const workData = await service.work.createEmptyWork(ctx.request.body);
     ctx.helper.success({ ctx, res: workData });
   }
-  //获取作品列表
+  // 获取作品列表
   async myList() {
     const { ctx } = this;
     const userId = ctx.state.user._id;
@@ -110,20 +110,20 @@ export default class WorkController extends Controller {
     const findCondition = {
       user: userId,
       ...(title && { title: { $regex: title, $options: 'i' } }),
-      ...(isTemplate && { isTemplate: !!parseInt(isTemplate) }),
+      ...(isTemplate && { isTemplate: !!parseInt(isTemplate) })
     };
     const listCondition: IndexCondition = {
       select: 'id author copiedCount coverImg desc title user isHot createdAt',
       populate: { path: 'user', select: 'username nickName picture' },
       find: findCondition,
       ...(pageIndex && { pageIndex: parseInt(pageIndex) }),
-      ...(pageSize && { pageSize: parseInt(pageSize) }),
+      ...(pageSize && { pageSize: parseInt(pageSize) })
     };
 
     const res = await ctx.service.work.getList(listCondition);
     ctx.helper.success({ ctx, res });
   }
-  //获取单个作品
+  // 获取单个作品
   @checkPermission('Work', 'workNoPermissonFail')
   async myWork() {
     const { ctx } = this;
@@ -139,7 +139,7 @@ export default class WorkController extends Controller {
       populate: { path: 'user', select: 'username nickName picture' },
       find: { isPublic: true, isTemplate: true },
       ...(pageIndex && { pageIndex: parseInt(pageIndex) }),
-      ...(pageSize && { pageSize: parseInt(pageSize) }),
+      ...(pageSize && { pageSize: parseInt(pageSize) })
     };
     const res = await ctx.service.work.getList(listCondition);
     ctx.helper.success({ ctx, res });
@@ -150,7 +150,7 @@ export default class WorkController extends Controller {
     const { id } = ctx.params;
     const payload = ctx.request.body;
     const res = await ctx.model.Work.findOneAndUpdate({ id }, payload, {
-      new: true,
+      new: true
     });
     ctx.helper.success({ ctx, res });
   }

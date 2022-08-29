@@ -9,21 +9,21 @@ const defaultIndexCondition: Required<IndexCondition> = {
   select: '',
   populate: [''],
   customSort: { createdAt: -1 },
-  find: {},
+  find: {}
 };
 export default class UserService extends Service {
   async createEmptyWork(payload) {
     const { ctx } = this;
-    //拿到对应的 user id
+    // 拿到对应的 user id
     const { username, _id } = ctx.state.user;
     console.log(username, _id);
-    //拿到一个独一无二的uuid
+    // 拿到一个独一无二的uuid
     const uuid = nanoid(6);
     const newEmptyWork: Partial<WorkProps> = {
       ...payload,
       user: new Types.ObjectId(_id),
       author: username,
-      uuid,
+      uuid
     };
     return ctx.model.Work.create(newEmptyWork);
   }
@@ -51,10 +51,10 @@ export default class UserService extends Service {
     const payload: Partial<WorkProps> = {
       status: 2,
       latestPublishAt: new Date(),
-      ...(isTemplate && { isTemplate: true }),
+      ...(isTemplate && { isTemplate: true })
     };
     const res = await ctx.model.Work.findOneAndUpdate({ id }, payload, {
-      new: true,
+      new: true
     });
     const uuid = res?.uuid;
     return `${H5BaseURL}/p/${id}-${uuid}`;

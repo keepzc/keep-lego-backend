@@ -42,7 +42,7 @@ function initWorkModel(app: Application) {
       status: { type: Number, default: 1 }, // 0是删除 1未发布 2发布 3管理员强制下线
       user: { type: Schema.Types.ObjectId, ref: 'User' },
       latestPublishAt: { type: Date },
-      channels: { type: Array },
+      channels: { type: Array }
     },
     { timestamps: true }
   );

@@ -9,7 +9,7 @@ const caslMethodMapping: Record<string, string> = {
   GET: 'read',
   POST: 'create',
   PATCH: 'update',
-  DELETE: 'delete',
+  DELETE: 'delete'
 };
 interface ModelMapping {
   mongoose: string;
@@ -30,14 +30,14 @@ interface IOptions {
 const fieldsOptions = { fieldsFrom: (rule) => rule.fields || [] };
 const defaultSearchOptions = {
   key: 'id',
-  value: { type: 'params', valueKey: 'id' },
+  value: { type: 'params', valueKey: 'id' }
 };
 /**
  *
  * @param modelName model 的名称，可以是普通的字符串，也可以是 casl 和 mongoose 的映射关系
  * @param errorType 返回的错误类型，来自 GlobalErrorTypes
  * @param options 特殊配置选项，可以自定义 action 以及查询条件，详见上面的 IOptions 选项
- * @returns function
+ * @return function
  */
 export default function checkPermission(
   modelName: string | ModelMapping,
@@ -55,10 +55,10 @@ export default function checkPermission(
       const searchOPtions = assign(defaultSearchOptions, options || {});
       const { key, value } = searchOPtions;
       const { type, valueKey } = value;
-      //构建查询query
+      // 构建查询query
       const source = type === 'params' ? ctx.params : ctx.request.body;
       const query = {
-        [key]: source[valueKey],
+        [key]: source[valueKey]
       };
       // 构建 modelname
       const mongooseModelName =
@@ -72,7 +72,7 @@ export default function checkPermission(
       }
       let permission = false;
       let keyPermission = true;
-      //获取定义的roles
+      // 获取定义的roles
       const ability = defineRoles(ctx.state.user);
       // 所以我们需要先获取 rule 来判断一下，看他是否存在对应的条件
       const rule = ability.relevantRuleFor(action, caslModelName);
