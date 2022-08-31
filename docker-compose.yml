@@ -4,9 +4,12 @@ services:
     image: mongo
     container_name: lego-mongo
     volumes:
-      - '.docker-volumes/mongo/data:/data/db'
+      - '.docker-volumes/mongo/data:/data/db' # mongo 数据映射
+      - '$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/'
     ports:
       - 27017:27017
+    env_file:
+      - .env
   lego-backend:
     depends_on:
       - lego-mongo
@@ -17,4 +20,6 @@ services:
     container_name: lego-backend
     ports:
       - 7001:7001
+    env_file:
+      - .env
       
