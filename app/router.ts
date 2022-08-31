@@ -28,7 +28,6 @@ export default (app: Application) => {
   router.delete('/works/:id', controller.work.delete);
   router.post('/works/publish/:id', controller.work.publishWork);
   router.post('/works/publish-template/:id', controller.work.publishTemplate);
-  router.post('/utils/upload', controller.utils.fileLocalUpload);
   router.post('/utils/upload-img', controller.utils.uploadMutipleFiles);
   router.get('/pages/:idAndUuid', controller.utils.renderH5Page);
   router.post('/channel', controller.work.createChannel);

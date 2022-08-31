@@ -33,7 +33,8 @@ export default class UserService extends Service {
     const fcondition = { ...defaultIndexCondition, ...condition };
     const { pageIndex, pageSize, select, populate, customSort, find } =
       fcondition;
-    const skip = (pageIndex - 1) * pageSize;
+    // const skip = (pageIndex - 1) * pageSize;
+    const skip = pageIndex * pageSize;
     const res = await ctx.model.Work.find(find)
       .select(select)
       .populate(populate)
