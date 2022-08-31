@@ -1,5 +1,14 @@
 {
   "extends": "eslint-config-egg/typescript",
+  "rules": {
+    "indent": "off",
+    "array-bracket-spacing": [2, "never"],//是否允许非空数组里面有多余的空格
+    "@typescript-eslint/semi": ["off", "always"],
+    "@typescript-eslint/no-unused-vars": 1,
+    "comma-dangle": 0,
+    "arrow-parens": ["error", "always"],
+    "space-before-function-paren": 0
+  },
   "parserOptions": {
     "project": "./tsconfig.json"
   }

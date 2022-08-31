@@ -1,0 +1,20 @@
+version: '3'
+services:
+  lego-mongo:
+    image: mongo
+    container_name: lego-mongo
+    volumes:
+      - '.docker-volumes/mongo/data:/data/db'
+    ports:
+      - 27017:27017
+  lego-backend:
+    depends_on:
+      - lego-mongo
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lego-backend
+    container_name: lego-backend
+    ports:
+      - 7001:7001
+      

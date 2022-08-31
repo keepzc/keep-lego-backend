@@ -17,11 +17,11 @@ export default class AppBoot implements IBoot {
   }
 
   configWillLoad() {
-    //只是支持同步调用
+    // 只是支持同步调用
     // console.log('config', this.app.config.baseUrl);
     // console.log('enable middleware', this.app.config.coreMiddleware);
     // this.app.config.coreMiddleware.unshift('myLogger');
-    //添加 customError 中间件提前
+    // 添加 customError 中间件提前
     this.app.config.coreMiddleware.push('customError');
   }
 
@@ -33,7 +33,7 @@ export default class AppBoot implements IBoot {
   }
 
   async didLoad() {
-    //应用已经启动完毕
+    // 应用已经启动完毕
     // const ctx = await this.app.createAnonymousContext();
     // const res = await ctx.service.test.sayHi('keep');
     // console.log('did ready res', res);

@@ -1,6 +1,6 @@
 import { Controller } from 'egg';
 import { GlobalErrorTypes } from '../error';
-//创建工厂函数
+// 创建工厂函数
 export default function validateInput(rules: any, errorType: GlobalErrorTypes) {
   return function (_prototype, _key: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;

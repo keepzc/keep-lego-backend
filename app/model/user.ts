@@ -28,7 +28,7 @@ function initUserModel(app: Application) {
       type: { type: String, default: 'email' },
       provider: { type: String },
       oauthID: { type: String },
-      role: { type: String, default: 'normal' },
+      role: { type: String, default: 'normal' }
     },
     {
       timestamps: true,
@@ -36,8 +36,8 @@ function initUserModel(app: Application) {
         transform(_doc, ret) {
           delete ret.password;
           delete ret.__v;
-        },
-      },
+        }
+      }
     }
   );
   userSchema.plugin(AutoIncrement, { inc_field: 'id', id: 'users_id_counter' });

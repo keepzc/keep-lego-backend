@@ -2,14 +2,14 @@ import { Controller } from 'egg';
 import inputValidate from '../decorator/inputValidate';
 const userCreateRules = {
   username: 'email',
-  password: { type: 'password', min: 8 },
+  password: { type: 'password', min: 8 }
 };
 const sendCodeRules = {
   phoneNumber: {
     type: 'string',
     format: /^1[3-9]\d{9}$/,
-    message: '手机号码格式错误',
-  },
+    message: '手机号码格式错误'
+  }
 };
 // const userPhoneCreateRules = {
 //   phoneNumber: {
@@ -31,7 +31,7 @@ export default class UserController extends Controller {
     if (user) {
       return ctx.helper.error({
         ctx,
-        errorType: 'createUserAlreadyExists',
+        errorType: 'createUserAlreadyExists'
       });
     }
     const userData = await service.user.createByEmail(ctx.request.body);
@@ -40,15 +40,15 @@ export default class UserController extends Controller {
   @inputValidate(userCreateRules, 'userValidateFail')
   async loginByEmail() {
     const { ctx, service, app } = this;
-    //根据username取得用户信息
+    // 根据username取得用户信息
     const { username, password } = ctx.request.body;
     const user = await service.user.findByUserName(username);
-    //检查用户是否存在
+    // 检查用户是否存在
     if (!user) {
       return ctx.helper.error({ ctx, errorType: 'loginCheckFailInfo' });
     }
     const verifyPwd = await ctx.compare(password, user.password);
-    //检查密码是否正确
+    // 检查密码是否正确
     if (!verifyPwd) {
       return ctx.helper.error({ ctx, errorType: 'loginCheckFailInfo' });
     }
@@ -56,7 +56,7 @@ export default class UserController extends Controller {
       { username: user.username, _id: user._id },
       app.config.jwt.secret,
       {
-        expiresIn: 60 * 60,
+        expiresIn: 60 * 60
       }
     );
     ctx.helper.success({ ctx, res: token, msg: '登录成功' });
@@ -72,7 +72,7 @@ export default class UserController extends Controller {
     if (veriCode !== preVeriCode) {
       return ctx.helper.error({
         ctx,
-        errorType: 'loginVeriCodeIncorrectFailInfo',
+        errorType: 'loginVeriCodeIncorrectFailInfo'
       });
     }
     const token = await this.service.user.loginByCellphone(phoneNumber);
@@ -88,7 +88,7 @@ export default class UserController extends Controller {
     if (preVeriCode) {
       return ctx.helper.error({
         ctx,
-        errorType: 'sendVeriCodeFrequentlyFailInfo',
+        errorType: 'sendVeriCodeFrequentlyFailInfo'
       });
     }
     //
@@ -122,7 +122,7 @@ export default class UserController extends Controller {
     );
   }
 
-  //通过Gitee登录
+  // 通过Gitee登录
   async oauthByGitee() {
     const { ctx } = this;
     const { code } = ctx.request.query;
