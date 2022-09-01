@@ -40,14 +40,14 @@ export default (appInfo: EggAppInfo) => {
   config.view = {
     defaultViewEngine: 'nunjucks'
   };
-  // config.redis = {
-  //   client: {
-  //     port: 6379,
-  //     host: '127.0.0.1',
-  //     password: '',
-  //     db: 0
-  //   }
-  // };
+  config.redis = {
+    client: {
+      port: 6379,
+      host: '127.0.0.1',
+      password: '',
+      db: 0
+    }
+  };
   config.cors = {
     origin: 'http://localhost:8080',
     allowMethods: 'GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH'

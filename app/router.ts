@@ -9,8 +9,9 @@ export default (app: Application) => {
   //   secret: app.config.jwt.secret,
   // });
   // const jwtMiddleware = app.jwt as any;
+
   router.prefix('/api');
-  router.get('/', controller.home.index);
+  router.get('/ping', controller.home.index);
   router.post('/users/create', controller.user.createByEmail);
   router.post('/users/loginByEmail', controller.user.loginByEmail);
   // router.get('/users/:id', controller.user.show);
