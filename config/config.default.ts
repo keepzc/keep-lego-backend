@@ -20,7 +20,8 @@ export default (appInfo: EggAppInfo) => {
     url: 'mongodb://localhost:27017/lego',
     options: {
       user: 'legoAdmin',
-      pass: '123456'
+      pass: '123456',
+      useUnifiedTopology: true
     }
   };
   config.bcrypt = {

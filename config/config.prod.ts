@@ -7,7 +7,8 @@ export default () => {
     url: 'mongodb://lego-mongo:27017/lego',
     options: {
       user: process.env.MONGO_DB_USERNAME,
-      pass: process.env.MONGO_DB_PASSWORD
+      pass: process.env.MONGO_DB_PASSWORD,
+      useUnifiedTopology: true
     }
   };
   config.redis = {
