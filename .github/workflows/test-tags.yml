@@ -1,0 +1,25 @@
+name: Test Tags
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  test-tags:
+    runs-on: unbuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # 测试github context 
+      - name: test github context info
+        run:
+          echo ${{github.ref}}
+          echo ${{github.ref_name}}
+          echo ${{github.sha}}
+      #测试查找并且替换
+      - name: find and replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with: 
+          find: "{{tag}}"
+          replace: ${{github.ref_name}}
+          include: "docker-compose-online.yml"
+      - run: cat docker-compose-online.yml
+          
