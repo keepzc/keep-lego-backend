@@ -53,7 +53,7 @@ jobs:
           # *退出阿里云 ACR docker logout 
           script: |
             docker login --username=${{ secrets.ACR_USERNAME }} --password=${{ secrets.ACR_PASSWORD }} registry.cn-beijing.aliyuncs.com
-            cd ~/lego-backend
+            cd ~/lego-backend/
             docker-compose -f docker-compose-online.yml down
             docker-compose -f docker-compose-online.yml up -d
             rm -rf .env
