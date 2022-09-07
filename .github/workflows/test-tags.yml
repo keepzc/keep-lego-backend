@@ -5,7 +5,7 @@ on:
       - 'v*.*.*'
 jobs:
   test-tags:
-    runs-on: unbuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       # 测试github context 
