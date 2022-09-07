@@ -38,4 +38,23 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: 'lego-backend'
           target: '~'
-          
+      # 通过ssh登录 然后重启服务
+      - name: 'excuting ssh and restart docker'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script_stop: true  
+          # *登录阿里云 ACR 
+          # *停止服务 docker-compose down
+          # *停止服务 docker-compose up -d
+          # *清理工作 rm -rf .env
+          # *退出阿里云 ACR 
+          script: |
+            docker login --username=${{ secrets.ACR_USERNAME }} --password=${{ secrets.ACR_PASSWORD }} registry.cn-beijing.aliyuncs.com
+            cd ~/lego-backend
+            docker-compose -f docker-compose-online.yml down
+            docker-compose -f docker-compose-online.yml up -d
+            rm -rf .env
+            docker logout registry.cn-beijing.aliyuncs.com
