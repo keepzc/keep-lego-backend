@@ -18,11 +18,11 @@ export default (appInfo: EggAppInfo) => {
   };
   config.mongoose = {
     url: 'mongodb://localhost:27017/lego',
-    options: {
-      user: 'legoAdmin',
-      pass: '123456',
-      useUnifiedTopology: true
-    }
+    // options: {
+    //   user: 'legoAdmin',
+    //   pass: '123456',
+    //   useUnifiedTopology: true
+    // }
   };
   config.bcrypt = {
     saltRounds: 10
