@@ -32,8 +32,8 @@ jobs:
         with:
           login-server: registry.cn-beijing.aliyuncs.com
           region-id: cn-beijing
-          username: "${{ secrets.ACR_USERNAME }}"
-          password: "${{ secrets.ACR_PASSWORD }}"
+          username: '${{ secrets.ACR_USERNAME }}'
+          password: '${{ secrets.ACR_PASSWORD }}'
       # 使用正确的阿里云 tag 进行 docker build
       - name: Build image for ACR Docker
         run: docker build --tag "registry.cn-beijing.aliyuncs.com/keepzc/lego:${{ github.ref_name }}" .
@@ -43,10 +43,10 @@ jobs:
       # 查找 docker-compose-online 文件，并且完成版本替换
       - name: find and replace
         uses: jacobtomlinson/gha-find-replace@v2
-        with: 
-          find: "{{tag}}"
+        with:
+          find: '{{tag}}'
           replace: ${{github.ref_name}}
-          include: "docker-compose-online.yml"
+          include: 'docker-compose-online.yml'
       - run: cat docker-compose-online.yml
       # 拷贝必须文件到一个文件夹，包括 .env, docker-compose-online.yml, mongo-entrypoint
       - name: copy necessary files in to one folder
@@ -61,7 +61,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.SSH_PASSWD }}
           source: 'lego-backend'
           target: '~'
       # 通过SSH登录 然后重启服务
@@ -70,13 +70,13 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          script_stop: true  
-          # *登录阿里云 ACR 
+          password: ${{ secrets.SSH_PASSWD }}
+          script_stop: true
+          # *登录阿里云 ACR
           # *停止服务 docker-compose down
           # *停止服务 docker-compose up -d
           # *清理工作 rm -rf .env
-          # *退出阿里云 ACR docker logout 
+          # *退出阿里云 ACR docker logout
           script: |
             docker login --username=${{ secrets.ACR_USERNAME }} --password=${{ secrets.ACR_PASSWORD }} registry.cn-beijing.aliyuncs.com
             cd ~/lego-backend/
