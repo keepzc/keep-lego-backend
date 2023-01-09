@@ -91,8 +91,9 @@ export default class UserController extends Controller {
         errorType: 'sendVeriCodeFrequentlyFailInfo'
       });
     }
-    //
-    const veriCode = Math.floor(Math.random() * 9000 + 1000).toString();
+    // 由于短信服务没有审批通过 暂时使用6666
+    // const veriCode = Math.floor(Math.random() * 9000 + 1000).toString();
+    const veriCode = '6666'
     await app.redis.set(`phoneVeriCode-${phoneNumber}`, veriCode, 'ex', 60);
     ctx.helper.success({ ctx, res: { veriCode } });
   }
