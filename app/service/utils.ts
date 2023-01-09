@@ -43,9 +43,9 @@ export default class UserService extends Service {
       });
     });
   }
-  async renderToPageData(query: { id: string; uuid: string }) {
+  async renderToPageData(query: { id: string, uuid: string }) {
     const { ctx } = this;
-    const work = await ctx.model.Work.findOne(query).lean();
+    const work = await ctx.model.Work.findOne(query as any).lean();
     if (!work) {
       throw new Error('work not exsit');
     }
