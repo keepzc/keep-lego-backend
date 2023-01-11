@@ -18,5 +18,6 @@ export default () => {
       password: process.env.REDIS_PASSWORD
     }
   };
+  config.H5BaseURL = 'http://47.93.58.48:7002'
   return config;
 };
