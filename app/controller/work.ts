@@ -102,6 +102,22 @@ export default class WorkController extends Controller {
     const workData = await service.work.createEmptyWork(ctx.request.body);
     ctx.helper.success({ ctx, res: workData });
   }
+  async copyWork() {
+    const { ctx } = this
+    const { id } = ctx.params
+    try {
+      const res = await ctx.service.work.copyWork(parseInt(id))
+      ctx.helper.success({ ctx, res })
+    } catch (e) {
+      return ctx.helper.error({ ctx, errorType: 'workNoPublicFail' })
+    }
+  }
+  async template() {
+    const { ctx } = this
+    const { id } = ctx.params
+    const res = await this.ctx.model.Work.findOne({id}).lean()
+    ctx.helper.success({ ctx, res})
+  }
   // 获取作品列表
   async myList() {
     const { ctx } = this;
