@@ -18,6 +18,12 @@ export default () => {
       password: process.env.REDIS_PASSWORD
     }
   };
+  //关闭 xframe 防范
+  config.security = {
+    xframe: {
+      enable: false,
+    },
+  };
   config.H5BaseURL = 'http://47.93.58.48:7002'
   return config;
 };

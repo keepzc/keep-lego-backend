@@ -14,7 +14,11 @@ export default (appInfo: EggAppInfo) => {
   config.security = {
     csrf: {
       enable: false
-    }
+    },
+    // 关闭 xframe 防范
+    xframe: {
+      enable: false,
+    },
   };
   config.mongoose = {
     url: 'mongodb://localhost:27017/lego',
@@ -96,7 +100,7 @@ export default (appInfo: EggAppInfo) => {
     giteeOauthConfig,
     H5BaseURL: 'http://localhost:7001/api/pages'
   };
-
+  
   // the return config will combines to EggAppConfig
   return {
     ...(config as {}),
