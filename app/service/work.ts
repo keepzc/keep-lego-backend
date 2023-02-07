@@ -23,6 +23,7 @@ export default class UserService extends Service {
       ...payload,
       user: new Types.ObjectId(_id),
       author: username,
+      isTemplate: false,
       uuid
     };
     return ctx.model.Work.create(newEmptyWork);
