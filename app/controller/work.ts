@@ -129,7 +129,7 @@ export default class WorkController extends Controller {
       ...(isTemplate && { isTemplate: !!parseInt(isTemplate) })
     };
     const listCondition: IndexCondition = {
-      select: 'id author copiedCount coverImg desc title user isHot createdAt',
+      select: 'id author copiedCount coverImg desc title user isTemplate isHot createdAt',
       populate: { path: 'user', select: 'username nickName picture' },
       find: findCondition,
       ...(pageIndex && { pageIndex: parseInt(pageIndex) }),
